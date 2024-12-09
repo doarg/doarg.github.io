@@ -1,6 +1,15 @@
 <html>
   <head>
     <title>doarg test</title>
+    <script>
+      const host = window.location.hostname;
+      if (host === "doarg.eu") {
+          window.location.href = "https://google.com";
+      } else if (host === "domein2.nl") {
+          window.location.href = "https://mijn-server-ip-2";
+      }
+
+    </script>
   </head>
   <body>
     <h1>test</h1>
