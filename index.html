@@ -8,14 +8,16 @@
     <style>
         .scrollable-slider {
             display: flex;
-            overflow-x: scroll;
+            overflow-x: auto;
             scroll-snap-type: x mandatory;
             gap: 1rem;
         }
         .scrollable-slider > div {
-            flex: 0 0 auto;
-            width: 300px;
+            flex: 0 0 calc(33.33% - 1rem);
             scroll-snap-align: start;
+        }
+        .scrollable-slider::-webkit-scrollbar {
+            display: none;
         }
     </style>
 </head>
