@@ -8,8 +8,9 @@
     <style>
         .scrollable-slider {
             display: flex;
-            overflow-x: auto;
+            overflow: hidden;
             scroll-snap-type: x mandatory;
+            position: relative;
             gap: 1rem;
         }
         .scrollable-slider > div {
@@ -19,6 +20,23 @@
         .scrollable-slider::-webkit-scrollbar {
             display: none;
         }
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .slider-button.left {
+            left: 0;
+        }
+        .slider-button.right {
+            right: 0;
+        }
     </style>
 </head>
 <body>
@@ -27,8 +45,10 @@
         <p>Uw specialist voor binnen- en buitenschilderwerk</p>
     </header>
 
-    <section class="container my-5">
-        <div class="scrollable-slider">
+    <section class="container my-5 position-relative">
+        <button class="slider-button left" id="prevBtn">&#8249;</button>
+        <button class="slider-button right" id="nextBtn">&#8250;</button>
+        <div class="scrollable-slider" id="slider">
             <div>
                 <img src="https://via.placeholder.com/300x200" class="img-fluid" alt="Afbeelding 1">
                 <h5 class="mt-2">Professioneel schilderwerk</h5>
@@ -100,6 +120,43 @@
     </footer>
 
     <script>
+        const slider = document.getElementById('slider');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        let scrollInterval;
+
+        function scrollToNext() {
+            slider.scrollBy({ left: slider.offsetWidth, behavior: 'smooth' });
+            if (slider.scrollLeft + slider.offsetWidth >= slider.scrollWidth) {
+                slider.scrollTo({ left: 0, behavior: 'smooth' });
+            }
+        }
+
+        function scrollToPrev() {
+            if (slider.scrollLeft === 0) {
+                slider.scrollTo({ left: slider.scrollWidth, behavior: 'smooth' });
+            } else {
+                slider.scrollBy({ left: -slider.offsetWidth, behavior: 'smooth' });
+            }
+        }
+
+        prevBtn.addEventListener('click', scrollToPrev);
+        nextBtn.addEventListener('click', scrollToNext);
+
+        function startAutoScroll() {
+            scrollInterval = setInterval(scrollToNext, 3000);
+        }
+
+        function stopAutoScroll() {
+            clearInterval(scrollInterval);
+        }
+
+        slider.addEventListener('mouseenter', stopAutoScroll);
+        slider.addEventListener('mouseleave', startAutoScroll);
+
+        startAutoScroll();
+
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
